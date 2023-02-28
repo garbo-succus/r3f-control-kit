@@ -1,3 +1,5 @@
+import { MathUtils } from 'three'
+
 interface PositionUpdate {
   coords?: Vec3
   origin?: Vec3
@@ -13,8 +15,9 @@ interface ConfigUpdate {
   initialCoords?: Vec3
 }
 
-const constrain = (min: number, max: number, value: number) =>
-  Math.min(Math.max(min, value), max) as number
+// Keep angle between 0-2π rads
+const clampAngle = (angle: number) =>
+  MathUtils.euclideanModulo(angle, Math.PI * 2) as number
 
 /**
  * Resets camera back to initialOrigin & initialCoords
@@ -64,16 +67,16 @@ export const updatePosition =
     set((props: CameraState) => {
       const result = updater(props)
       const origin = result.origin || props.origin
-      // Constrain r & theta to min/max
+      // Constrain r & theta to min/max, phi to 0-2π rads
       const { minR, maxR, minTheta, maxTheta } = props
       const coords = result.coords
         ? [
-            constrain(minR, maxR, result.coords[0]),
-            constrain(minTheta, maxTheta, result.coords[1]),
-            result.coords[2]
+            MathUtils.clamp(result.coords[0], minR, maxR),
+            MathUtils.clamp(result.coords[1], minTheta, maxTheta),
+            clampAngle(result.coords[2])
           ]
         : props.coords
-      return { coords, origin }
+      return { origin, coords }
     })
 
 /**
