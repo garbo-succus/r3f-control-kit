@@ -30,7 +30,7 @@ import OrbitCamera, { actions } from 'r3f-orbit-camera'
 const mouseMoveHandler = (e) => actions.updatePosition(
   ({ coords: [r, theta, phi], origin: [x, y, z] }) => {
     const coords = [
-      constrain(1, 30, r + e.movementY / 40),
+      r + e.movementY / 40,
       theta,
       phi - e.movementX / 100
     ]
