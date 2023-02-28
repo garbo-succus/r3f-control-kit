@@ -10,7 +10,6 @@ interface ConfigUpdate {
   maxR?: number
   minTheta?: number
   maxTheta?: number
-  rotationScale?: Vec2
   initialOrigin?: Vec3
   initialCoords?: Vec3
 }
@@ -106,7 +105,6 @@ export const updateConfig =
         maxR: result.maxR || props.maxR,
         minTheta: result.minTheta || props.minTheta,
         maxTheta: result.maxTheta || props.maxTheta,
-        rotationScale: result.rotationScale || props.rotationScale,
         initialOrigin: result.initialOrigin || props.initialOrigin,
         initialCoords: result.initialCoords || props.initialCoords
       }

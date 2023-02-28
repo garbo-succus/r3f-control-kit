@@ -1,4 +1,6 @@
-const constrain = (min, max, value) => Math.min(Math.max(min, value), max);
+import { MathUtils } from 'three';
+// Keep angle between 0-2π rads
+const clampAngle = (angle) => MathUtils.euclideanModulo(angle, Math.PI * 2);
 /**
  * Resets camera back to initialOrigin & initialCoords
  *
@@ -40,16 +42,16 @@ export const resetPosition = (set) => () => set(({ initialOrigin, initialCoords 
 export const updatePosition = (set) => (updater) => set((props) => {
     const result = updater(props);
     const origin = result.origin || props.origin;
-    // Constrain r & theta to min/max
+    // Constrain r & theta to min/max, phi to 0-2π rads
     const { minR, maxR, minTheta, maxTheta } = props;
     const coords = result.coords
         ? [
-            constrain(minR, maxR, result.coords[0]),
-            constrain(minTheta, maxTheta, result.coords[1]),
-            result.coords[2]
+            MathUtils.clamp(result.coords[0], minR, maxR),
+            MathUtils.clamp(result.coords[1], minTheta, maxTheta),
+            clampAngle(result.coords[2])
         ]
         : props.coords;
-    return { coords, origin };
+    return { origin, coords };
 });
 /**
  * Updates camera config
@@ -76,7 +78,6 @@ export const updateConfig = (set) => (updater) => set((props) => {
         maxR: result.maxR || props.maxR,
         minTheta: result.minTheta || props.minTheta,
         maxTheta: result.maxTheta || props.maxTheta,
-        rotationScale: result.rotationScale || props.rotationScale,
         initialOrigin: result.initialOrigin || props.initialOrigin,
         initialCoords: result.initialCoords || props.initialCoords
     };

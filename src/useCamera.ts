@@ -27,7 +27,6 @@ export const useCamera = create((set, get) => ({
   maxR: Infinity,
   minTheta: 0.03,
   maxTheta: Math.PI / 2,
-  rotationScale: [Math.PI * 4, Math.PI * 1],
   initialOrigin: [0, 1, 0],
   initialCoords: [15, Math.PI / 8, Math.PI / 4],
 

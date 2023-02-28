@@ -6,7 +6,6 @@ interface CameraState {
   maxR: number
   minTheta: number
   maxTheta: number
-  rotationScale: Vec2
   initialOrigin: Vec3
   initialCoords: Vec3
   coords: Vec3
