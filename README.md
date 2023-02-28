@@ -1,8 +1,12 @@
 # r3f-orbit-camera
 
-This is a [Zustand](https://github.com/pmndrs/zustand)-based orbit camera for react-three-fiber. It aims to provide a more React-like API than other cameras.
+This is a [Zustand](https://github.com/pmndrs/zustand)-based orbit camera for react-three-fiber.
+It aims to provide a more React-like API than other cameras.
+Note that controls are not part of this library; try [r3f-orbit-controls](https://github.com/garbo-succus/r3f-orbit-controls)
 
-If you just want a simple React component that takes `origin` and `coords` as props, see [r3f-simple-orbit-camera](https://github.com/garbo-succus/r3f-simple-orbit-camera).
+A demo is available [here](https://codesandbox.io/s/r3f-orbit-camera-6otwuk).
+
+If you just want a simple React component that takes `origin` and `coords` as props, try [r3f-simple-orbit-camera](https://github.com/garbo-succus/r3f-simple-orbit-camera).
 
 # Getting started
 
