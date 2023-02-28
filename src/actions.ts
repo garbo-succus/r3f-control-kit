@@ -13,6 +13,9 @@ interface ConfigUpdate {
   initialCoords?: Vec3
 }
 
+const constrain = (min: number, max: number, value: number) =>
+  Math.min(Math.max(min, value), max) as number
+
 /**
  * Resets camera back to initialOrigin & initialCoords
  *
@@ -60,10 +63,17 @@ export const updatePosition =
   (set: Function) => (updater: (state: CameraState) => PositionUpdate) =>
     set((props: CameraState) => {
       const result = updater(props)
-      return {
-        origin: result.origin || props.origin,
-        coords: result.coords || props.coords
-      }
+      const origin = result.origin || props.origin
+      // Constrain r & theta to min/max
+      const { minR, maxR, minTheta, maxTheta } = props
+      const coords = result.coords
+        ? [
+            constrain(minR, maxR, result.coords[0]),
+            constrain(minTheta, maxTheta, result.coords[1]),
+            result.coords[2]
+          ]
+        : props.coords
+      return { coords, origin }
     })
 
 /**
