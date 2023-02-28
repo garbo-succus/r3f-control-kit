@@ -1,3 +1,4 @@
+const constrain = (min, max, value) => Math.min(Math.max(min, value), max);
 /**
  * Resets camera back to initialOrigin & initialCoords
  *
@@ -38,10 +39,17 @@ export const resetPosition = (set) => () => set(({ initialOrigin, initialCoords 
  */
 export const updatePosition = (set) => (updater) => set((props) => {
     const result = updater(props);
-    return {
-        origin: result.origin || props.origin,
-        coords: result.coords || props.coords
-    };
+    const origin = result.origin || props.origin;
+    // Constrain r & theta to min/max
+    const { minR, maxR, minTheta, maxTheta } = props;
+    const coords = result.coords
+        ? [
+            constrain(minR, maxR, result.coords[0]),
+            constrain(minTheta, maxTheta, result.coords[1]),
+            result.coords[2]
+        ]
+        : props.coords;
+    return { coords, origin };
 });
 /**
  * Updates camera config
