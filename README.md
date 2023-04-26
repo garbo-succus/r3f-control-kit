@@ -1,60 +1,59 @@
 # r3f-orbit-camera
 
-This is a [Zustand](https://github.com/pmndrs/zustand)-based orbit camera for react-three-fiber.
-It aims to provide a more React-like API than other cameras.
-Note that controls are not part of this library; try [r3f-orbit-controls](https://github.com/garbo-succus/r3f-orbit-controls)
+This is a toolkit for implementing your own react-three-fiber orbit controls.
 
-A demo is available [here](https://codesandbox.io/s/r3f-orbit-camera-6otwuk).
-
-If you just want a simple React component that takes `origin` and `coords` as props, try [r3f-simple-orbit-camera](https://github.com/garbo-succus/r3f-simple-orbit-camera).
-
-# Getting started
-
-The `<OrbitCamera \>` component creates a camera in your scene, attached to internal Zustand state.
-
-The camera state describes a target position relative to the world (`origin`) and (`coords`).
-
-![A visual diagram of how origin and coords relate to the 3D world](./camera-state.svg)
+![A visual diagram of the camera state](./camera-state.svg)
 
 ```js
-origin: [x, y, z], // world target
+import { OrbitCamera, normalizeCoords } from 'r3f-orbit-camera'
 
-coords: [
-  r, // Distance to origin
-  theta, // Polar (up-down) angle
-  phi // Azimuthal (left-right) angle
-]
+const OrbitControls = () => {
+  const [origin, setOrigin] = useState([0, 0, 0])
+  const [coords, setCoords] = useState([0, 0, 0])
+
+  const [x, y, z] = origin // target
+  const [
+    r, // Distance to origin
+    theta, // Polar (up-down) angle
+    phi // Azimuthal (left-right) angle
+  ] = coords
+
+  return <OrbitCamera origin={origin} coords={coords} />
+}
+
+const App = () => {
+  return (
+    <Canvas>
+      <OrbitControls />
+    </Canvas>
+  )
+}
 ```
 
-# Example
+## `normalizeCoords`
+
+This function takes a `coords` array and:
+
+- Constrains `r`
+- Constrains `theta`
+- Normalizes `phi` to 0 <> 2π rads (0° to 360°)
+
 ```js
-import { Canvas } from '@react-three/fiber'
-import OrbitCamera, { actions } from 'r3f-orbit-camera'
-
-const mouseMoveHandler = (e) => actions.updatePosition(
-  ({ coords: [r, theta, phi], origin: [x, y, z] }) => {
-    const coords = [
-      r + e.movementY / 40,
-      theta,
-      phi - e.movementX / 100
-    ]
-    const origin = [x, y, z]
-    return { coords, origin }
-  }
-])
-
-const App = () => (
-  <Canvas
-    style={{ backgroundColor: "black", height: "90vh" }}
-    onMouseMove={mouseMoveHandler}
-  >
-    <OrbitCamera />
-    <ambientLight intensity={1} />
-    <directionalLight position={[50, 100, 70]} />
-    <mesh>
-      <boxGeometry />
-      <meshStandardMaterial color="red" />
-    </mesh>
-  </Canvas>
+const [r, theta, phi] = normalizeCoords(
+  {
+    minR: 0,
+    maxR: Infinity,
+    minTheta: 0,
+    maxTheta: Math.PI / 2
+  },
+  coords
 )
 ```
+
+## Animations
+
+Setting the `origin` & `coords` component props are the recommended way to move the camera, however they are not suitable for animation as the changes must pass through the React reconciliation mechanism. The `updateStream` prop is an escape hatch allowing imperative `{origin,coords}` updates.
+
+At the moment you can pass it a Zustand state subscription. 
+
+We should provide a lerp and a useSpring example (with a wrapper component).

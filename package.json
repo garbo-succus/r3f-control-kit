@@ -1,6 +1,6 @@
 {
   "name": "r3f-orbit-camera",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
   "peerDependencies": {
@@ -12,12 +12,10 @@
     "build": "tsc",
     "test": "tsc --noEmit && echo 'no tests'",
     "dev": "tsc --watch --pretty",
-    "format": "prettier src --write",
-    "docs": "typedoc --out docs --entryPointStrategy expand ./src"
+    "format": "prettier src --write"
   },
   "dependencies": {
-    "@react-three/drei": "^9.56.17",
-    "zustand": "^4.3.2"
+    "@react-three/drei": ">=9.53"
   },
   "devDependencies": {
     "@types/node": "^18.11.19",
