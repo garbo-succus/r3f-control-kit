@@ -19,19 +19,51 @@ This is a toolkit for implementing your own react-three-fiber orbit controls.
 ## Example
 
 ```js
-import { OrbitCamera, normalizeCoords } from "r3f-orbit-camera"
+import { useState } from 'react'
+import { Canvas } from '@react-three/fiber'
+import {
+  OrbitCamera,
+  normalizeCoords,
+  bitmaskToArray
+} from './r3f-orbit-camera'
 
-const OrbitControls = () => {
+function App() {
   const [origin, setOrigin] = useState([0, 0, 0])
-  const [coords, setCoords] = useState([0, 0, 0])
+  const [coords, setCoords] = useState([16, Math.PI / 4, 0])
 
-  return <OrbitCamera origin={origin} coords={coords} />
-}
+  const cameraConfig = {
+    minR: 1,
+    maxR: Infinity,
+    minTheta: Math.PI / 16,
+    maxTheta: Math.PI / 2
+  }
 
-const App = () => {
+  const mouseMoveHandler = ({ buttons, movementX, movementY }) => {
+    const [leftButton, rightButton, middleButton] = bitmaskToArray(buttons)
+    if (leftButton) {
+      // Rotate camera
+      const [r, theta, phi] = coords
+      const newCoords = normalizeCoords(cameraConfig, [
+        r,
+        theta + movementY / 100,
+        phi - movementX / 100
+      ])
+      setCoords(newCoords)
+    } else if (rightButton) { 
+      // Move camera
+      const [x, y, z] = origin
+      const newOrigin = [x + movementX / 100, y, z + movementY / 100]
+      setOrigin(newOrigin)
+    } else if (middleButton) {
+      // Reset camera
+      setOrigin([0, 0, 0])
+      setCoords([16, Math.PI / 4, 0])
+    }
+  }
+
   return (
-    <Canvas>
-      <OrbitControls />
+    <Canvas onMouseMove={mouseMoveHandler}>
+      <OrbitCamera origin={origin} coords={coords} />
     </Canvas>
   )
 }
@@ -71,3 +103,22 @@ const [r, theta, phi] = normalizeCoords(
   coords
 )
 ```
+
+### `bitmaskToArray`
+
+This function converts `event.buttons` from a pointer event into an array of booleans.
+
+```js
+<Canvas onPointerDown={
+  ({ buttons }) => {
+    const [
+      leftMouseButton,
+      rightMouseButton,
+      middleMouseButton,
+      mouseButton4,
+      mouseButton5
+    ] = bitmaskToArray(buttons)
+  }
+} />
+
+````

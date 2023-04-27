@@ -1,2 +1,2 @@
 export { OrbitCamera } from './OrbitCamera'
-export { normalizeCoords } from './helpers'
+export { normalizeCoords, bitmaskToArray } from './helpers'

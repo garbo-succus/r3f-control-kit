@@ -8,3 +8,11 @@ export const normalizeCoords = (
   MathUtils.clamp(theta, minTheta, maxTheta),
   MathUtils.euclideanModulo(phi, Math.PI * 2)
 ]
+
+export const bitmaskToArray = (i: number) => [
+  !!(i & 1),
+  !!(i & 2),
+  !!(i & 4),
+  !!(i & 8),
+  !!(i & 16)
+]
