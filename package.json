@@ -1,6 +1,6 @@
 {
-  "name": "r3f-orbit-camera",
-  "version": "0.1.0",
+  "name": "camera-control-toolkit",
+  "version": "0.0.0",
   "type": "module",
   "main": "dist/index.js",
   "peerDependencies": {

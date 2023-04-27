@@ -1,6 +1,17 @@
-# r3f-orbit-camera
+# camera-control-toolkit
 
-This is a toolkit for implementing your own react-three-fiber orbit controls.
+This is a toolkit for implementing your own react-three-fiber camera controls.
+
+## Rationale
+
+Camera controls are generally the main way humans interact with 3D apps.
+They must handle multiple input methods (touch, keyboard, mouse, gamepads, XR, etc) but should also get out of the way when not needed.
+
+We have found "kitchen sink" camera controllers to be difficult to integrate into state management, and easy to outgrow.
+
+Rather than ship an entire controller, we aim to provide composable pieces for building one, patterns for common requirements, and boilerplate to get started with.
+
+## Spherical coordinates
 
 ![A visual diagram of the camera state](./camera-state.svg)
 
@@ -22,10 +33,10 @@ This is a toolkit for implementing your own react-three-fiber orbit controls.
 import { useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import {
-  OrbitCamera,
+  SphericalCamera,
   normalizeCoords,
   bitmaskToArray
-} from './r3f-orbit-camera'
+} from 'camera-control-toolkit'
 
 function App() {
   const [origin, setOrigin] = useState([0, 0, 0])
@@ -63,26 +74,20 @@ function App() {
 
   return (
     <Canvas onMouseMove={mouseMoveHandler}>
-      <OrbitCamera origin={origin} coords={coords} />
+      <SphericalCamera origin={origin} coords={coords} />
     </Canvas>
   )
 }
 ```
 
-## Animations
-
-Setting the `origin` & `coords` component props are the recommended way to move the camera, however they are not suitable for animation as the changes must pass through react diffing. The `updateStream` prop is an escape hatch allowing imperative `{origin,coords}` updates.
-
-At the moment you can pass it a Zustand state subscription.
-
 ## API
 
-### `OrbitCamera`
+### `SphericalCamera`
 
 This component creates a `<PerspectiveCamera>` looking at `origin`, rotated by `coords`.
 It accepts all PerspectiveCamera props (`makeDefault` is true by default).
 
-The camera can be animated by passing an `updateStream` prop.
+Note that there is overhead to updating the `origin` & `coords` props directly, as each change must pass through react diffing. The `updateStream` prop is provided as an escape hatch to bypass diffing with imperative `{origin,coords}` updates.
 
 ### `normalizeCoords`
 

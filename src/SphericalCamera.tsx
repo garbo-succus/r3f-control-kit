@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { invalidate } from '@react-three/fiber'
 import { PerspectiveCamera } from '@react-three/drei'
 
-export const OrbitCamera = ({
+export const SphericalCamera = ({
   origin, // Target position
   coords: [
     r, // Distance to origin
