@@ -16,15 +16,15 @@ Rather than ship an entire controller, we aim to provide composable pieces for b
 ![A visual diagram of the camera state](./camera-state.svg)
 
 ```js
-  // origin: target world position
-  const [x, y, z] = origin
+// origin: target world position
+const [x, y, z] = origin
 
-  // coords: camera rotation, relative to origin
-  const [
-    r, // Distance to origin
-    theta, // Polar (up-down) angle
-    phi // Azimuthal (left-right) angle
-  ] = coords
+// coords: camera rotation, relative to origin
+const [
+  r, // Distance to origin
+  theta, // Polar (up-down) angle
+  phi // Azimuthal (left-right) angle
+] = coords
 ```
 
 ## Example
@@ -60,7 +60,7 @@ function App() {
         phi - movementX / 100
       ])
       setCoords(newCoords)
-    } else if (rightButton) { 
+    } else if (rightButton) {
       // Move camera
       const [x, y, z] = origin
       const newOrigin = [x + movementX / 100, y, z + movementY / 100]
@@ -89,6 +89,42 @@ It accepts all PerspectiveCamera props (`makeDefault` is true by default).
 
 Note that there is overhead to updating the `origin` & `coords` props directly, as each change must pass through react diffing. The `updateStream` prop is provided as an escape hatch to bypass diffing with imperative `{origin,coords}` updates.
 
+### `ControlRig`
+
+This convenience component attaches an `onEvent` event handler to a `target` element, for every event listed in `eventTypes`.
+The `options` prop to is passed to the `addEventListener` call.
+
+`event.preventDefault()` is called on all events in the `preventDefaults` prop.
+
+```js
+const App = () => {
+  const target = useThree((three) => three.gl.domElement) // Get r3f canvas element
+  return (
+    <Canvas>
+      <ControlRig
+        target={target}
+        onEvent={(event) => console.log(event.type)}
+        preventDefaults={[
+          'wheel', // Prevent ctrl-zoom/alt-history gestures
+          'touchstart', // https://pqina.nl/blog/blocking-navigation-gestures-on-ios-13-4/
+          'contextmenu' // No iOS support; use right-click or long-press instead
+        ]}
+        eventTypes={[
+          'wheel',
+          'pointerover',
+          'pointerenter',
+          'pointerdown',
+          'pointermove',
+          'pointerup',
+          'pointercancel',
+          'pointerout'
+        ]}
+      />
+    </Canvas>
+  )
+}
+```
+
 ### `normalizeCoords`
 
 This function takes a `coords` array and:
@@ -103,7 +139,7 @@ const [r, theta, phi] = normalizeCoords(
     minR: 0,
     maxR: Infinity,
     minTheta: 0,
-    maxTheta: Math.PI / 2,
+    maxTheta: Math.PI / 2
   },
   coords
 )
@@ -114,8 +150,8 @@ const [r, theta, phi] = normalizeCoords(
 This function converts `event.buttons` from a pointer event into an array of booleans.
 
 ```js
-<Canvas onPointerDown={
-  ({ buttons }) => {
+<Canvas
+  onPointerDown={({ buttons }) => {
     const [
       leftMouseButton,
       rightMouseButton,
@@ -123,7 +159,14 @@ This function converts `event.buttons` from a pointer event into an array of boo
       mouseButton4,
       mouseButton5
     ] = bitmaskToArray(buttons)
-  }
-} />
+  }}
+/>
+```
 
-````
+### `addEventListeners`
+
+Add event listeners to a list of events on a target; return a function to remove them
+
+### `addPreventDefaults`
+
+Add `event => event.preventDefault()` handlers to a list of events; return a function to remove them
