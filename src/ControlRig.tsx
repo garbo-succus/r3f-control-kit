@@ -1,5 +1,5 @@
 import { memo, useEffect } from 'react'
-import { addEventListeners, addPreventDefaults } from './helpers'
+import { addEventListeners, addPreventDefaults } from './dom'
 
 interface ControlRigProps {
   target?: HTMLElement
