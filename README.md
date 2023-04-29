@@ -130,7 +130,7 @@ const onPointerMove = (event) => {
 Adds event listeners for list of events to a target; returns a function to remove them.
 See <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener>.
 
-_Note:_ You should avoid using mouse and touch events, as they have been obsoleted by pointer events.
+**Note:** You should avoid using mouse and touch events, as they have been obsoleted by pointer events.
 
 ```js
 const removeEventListeners = addEventListeners(
@@ -161,7 +161,7 @@ const removePreventDefaults = addPreventDefaults(
 )
 ```
 
-_Note:_ You should preventDefault these events:
+**Note:** You should preventDefault these events:
 
 ```js
 const types = [
@@ -222,3 +222,18 @@ const [r, theta, phi] = normalizeCoords(
   coords
 )
 ```
+
+## Other discussion
+
+### In-app cursor
+
+There is latency between the actual mouse cursor position and the position reported to the DOM.
+This can be visualized here: <https://rsms.me/projects/pointer-latency/>
+
+It is possible to mask this latency by hiding the system cursor and showing your own cursor (an emoji or SVG etc).
+
+This is generally not recommended, as it makes a11y worse, the cursor may fail to load, and there is discontinuity for the user when entering/leaving the window. However, in certain contexts (fullscreen apps etc), showing an in-app cursor may help with pointing prescision and game feedback.
+
+### Useful CSS
+
+- `touchAction: 'none'`

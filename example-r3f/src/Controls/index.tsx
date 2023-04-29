@@ -14,7 +14,7 @@ export const Controls = () => {
           return ( ...
             <SphericalCamera origin={origin} coords={coords} />
           ... )
-        However, with updateStream, we can bypass diffing for better perf and to make Paul happy.
+        However, with updateStream, we can bypass diffing for better perf and make Paul happy.
       */}
       <SphericalCamera updateStream={useCamera.subscribe} />
 
