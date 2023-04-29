@@ -31,6 +31,7 @@ export const handlePointer =
     }
 
     // Move camera
+    // TODO: Movement should be relative to camera phi
     if (rightButton) {
       const origin = [x + movementX / scaling, y, z + movementY / scaling]
       return { origin }
@@ -45,28 +46,40 @@ export const handlePointer =
     }
   }
 
-// This is a little bit wonky and could use some polish
-export const handleWheel =
-  (event: PointerEvent) =>
-  ({ origin: [x, y, z], coords: [r, theta, phi] }) => {
-    const {
-      deltaX,
-      altKey, // `true` on trackpads when 2-finger-swiping (and when alt key is pressed)
-      ctrlKey // `true` on trackpads when pinch-zooming (and when ctrl key is pressed)
-    } = event
+export const handleWheel = (event: PointerEvent) => (state) => {
+  const {
+    altKey,
+    ctrlKey // `true` on trackpads when pinch-zooming (or ctrl key is pressed)
+  } = event
 
-    // // Move camera
-    // if (altKey) return handleMove({ deltaXY: [-deltaX, -event.deltaY] })
-    // // Rotate camera
-    // return actions.updatePosition(
-    //   ({ coords: [oldR, oldTheta, oldPhi] }: CameraState) => {
-    //     // Swap deltaY/deltaZ if ctrl key pressed (or user is pinch-zooming on trackpad)
-    //     const deltaY = ctrlKey ? event.deltaZ : event.deltaY
-    //     const deltaZ = ctrlKey ? event.deltaY : event.deltaZ
-    //     const r = oldR + deltaY / (500 / oldR) // Dolly in-out (faster as we move out further)
-    //     const theta = oldTheta - deltaZ / 100 // Tilt up-down
-    //     const phi = oldPhi + deltaX / 200 // Pan left-right
-    //     return { coords: [r, theta, phi] }
-    //   }
-    // )
+  // Move camera (origin) when alt+wheeling
+  if (altKey) {
+    // Swap deltaX/deltaY if user is holding the ctrl key,
+    // so that scrollwheels can be used to move both forward/back and left/right
+    const [deltaX, deltaY] = ctrlKey
+      ? [event.deltaY, event.deltaX]
+      : [event.deltaX, event.deltaY]
+    // Pass a fake right-mouse-drag PointerEvent to handlePointer
+    return handlePointer({
+      // ...event, // TODO: We don't need to pass the whole event; handlePointer type should reflect this
+      buttons: 2,
+      movementX: -deltaX,
+      movementY: -deltaY
+    } as PointerEvent)(state)
   }
+
+  // Rotate camera (coords)
+  const {
+    coords: [r, theta, phi]
+  } = state
+  // Swap deltaY/deltaZ if user is pinching (or ctrl+wheeling)
+  const [deltaY, deltaZ] = ctrlKey
+    ? [event.deltaZ, event.deltaY]
+    : [event.deltaY, event.deltaZ]
+  const coords = [
+    r + deltaY / (500 / r), // Dolly faster as we move out further
+    theta - deltaZ / 100,
+    phi + event.deltaX / 200
+  ]
+  return { coords }
+}
