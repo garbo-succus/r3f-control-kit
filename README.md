@@ -72,51 +72,6 @@ export const App = () => (
 )
 ```
 
-## API: Camera
-
-These functions are specifically for handling 3D cameras
-
-![A visual diagram of the camera state](./camera-state.svg)
-
-```js
-// origin: target world position
-const [x, y, z] = origin
-
-// coords: camera rotation, relative to origin
-const [
-  r, // Distance to origin
-  theta, // Polar (up-down) angle
-  phi // Azimuthal (left-right) angle
-] = coords
-```
-
-### `SphericalCamera`
-
-This component creates a `<PerspectiveCamera>` looking at `origin`, rotated by `coords`.
-It accepts all PerspectiveCamera props (`makeDefault` is true by default).
-
-Note that there is overhead to updating the `origin` & `coords` props directly, as each change must pass through react diffing. The `updateStream` prop is provided as an escape hatch to bypass diffing with imperative `{origin,coords}` updates.
-
-### `normalizeCoords`
-
-This function takes a `coords` array and:
-
-- Constrains `r` (min/max distance to/from origin)
-- Constrains `theta` (min/max up/down angle)
-- Normalizes `phi` to 0 <> 2π rads (if we rotated 360°, reset to 0°)
-
-```js
-const [r, theta, phi] = normalizeCoords(
-  {
-    minR: 0,
-    maxR: Infinity,
-    minTheta: 0,
-    maxTheta: Math.PI / 2
-  },
-  coords
-)
-```
-
 ## API: DOM
 
 These functions are for input handling, independent of r3f.
@@ -221,4 +176,49 @@ const types = [
   // You should use a right-click or long-press gesture instead.
   'contextmenu'
 ]
+```
+
+## API: Camera
+
+These functions are specifically for handling 3D cameras.
+
+![A visual diagram of the camera state](./camera-state.svg)
+
+```js
+// origin: target world position
+const [x, y, z] = origin
+
+// coords: camera rotation, relative to origin
+const [
+  r, // Distance to origin
+  theta, // Polar (up-down) angle
+  phi // Azimuthal (left-right) angle
+] = coords
+```
+
+### `SphericalCamera`
+
+This component creates a `<PerspectiveCamera>` looking at `origin`, rotated by `coords`.
+It accepts all PerspectiveCamera props (`makeDefault` is true by default).
+
+Note that there is overhead to updating the `origin` & `coords` props directly, as each change must pass through react diffing. The `updateStream` prop is provided as an escape hatch to bypass diffing with imperative `{origin,coords}` updates.
+
+### `normalizeCoords`
+
+This function takes a `coords` array and:
+
+- Constrains `r` (min/max distance to/from origin)
+- Constrains `theta` (min/max up/down angle)
+- Normalizes `phi` to 0 <> 2π rads (if we rotated 360°, reset to 0°)
+
+```js
+const [r, theta, phi] = normalizeCoords(
+  {
+    minR: 0,
+    maxR: Infinity,
+    minTheta: 0,
+    maxTheta: Math.PI / 2
+  },
+  coords
+)
 ```
