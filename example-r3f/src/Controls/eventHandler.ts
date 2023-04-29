@@ -6,9 +6,9 @@ export const eventHandler = (event) => {
     case 'pointerup':
     case 'pointerdown':
     case 'pointermove':
-      return (event) => updateCamera(handlePointer(event))
+      return updateCamera(handlePointer(event))
     case 'wheel':
-      return (event) => updateCamera(handleWheel(event))
+      return updateCamera(handleWheel(event))
     default:
       return
   }
