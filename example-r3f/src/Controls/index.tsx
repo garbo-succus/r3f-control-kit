@@ -52,7 +52,7 @@ export const Controls = () => {
         However, with updateStream, we can bypass diffing for better perf and to make Paul happy.
       */}
       <SphericalCamera updateStream={useCamera.subscribe} />
-      
+
       {/* ControlRig lets us attach event handlers from anywhere in the app */}
       <ControlRig
         target={target}

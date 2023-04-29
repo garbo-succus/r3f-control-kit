@@ -3,12 +3,12 @@ import { invalidate } from '@react-three/fiber'
 import { PerspectiveCamera } from '@react-three/drei'
 
 export const SphericalCamera = ({
-  origin = [0,0,0], // Target position
+  origin = [0, 0, 0], // Target position
   coords: [
     r, // Distance to origin
     theta, // Polar (up-down) angle
     phi // Azimuthal (left-right) angle
-  ] = [0,0,0],
+  ] = [0, 0, 0],
   makeDefault = true, // Make this the default three camera
   updateStream, // Stream of { origin, coords } updates
   ...cameraProps
