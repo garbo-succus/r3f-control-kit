@@ -6,7 +6,7 @@ export const cameraConfig = {
   minTheta: Math.PI / 16,
   maxTheta: Math.PI / 2,
   defaultOrigin: [0, 0, 0],
-  defaultCoords: [16, Math.PI / 4, 0]
+  defaultCoords: [5, Math.PI / 4, 0]
 }
 
 export const useCamera = create((set) => ({
