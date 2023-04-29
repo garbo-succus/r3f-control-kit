@@ -1,4 +1,4 @@
-# control-kit
+# 🕹️control-kit
 
 This is a toolkit for implementing your own react-three-fiber camera controls.
 
@@ -225,7 +225,21 @@ const [r, theta, phi] = normalizeCoords(
 
 ## Other discussion
 
-### In-app cursor
+### Trackpad multitouch `wheel` events
+
+Many laptop trackpads support multitouch gestures, like 2-finger-swipes and pinch zooming.
+Firefox and Chrome handle them by setting `altKey`/`ctrlKey` to true.
+
+- `wheelEvent.altKey`: `true` when 2-finger-swiping (or when alt key being pressed)
+- `wheelEvent.ctrlKey`: `true` when pinch-zooming (or when ctrl key being pressed)
+
+Safari has more advanced support via the proprietary `gesturestart`/`gesturechange`/`gestureend` events; unfortunately the author has no experience with these. It may be desirable to shim Firefox/Chrome behavior where possible.
+
+### Useful CSS
+
+- `touchAction: 'none'`
+
+### In-app cursors
 
 There is latency between the actual mouse cursor position and the position reported to the DOM.
 This can be visualized here: <https://rsms.me/projects/pointer-latency/>
@@ -233,7 +247,3 @@ This can be visualized here: <https://rsms.me/projects/pointer-latency/>
 It is possible to mask this latency by hiding the system cursor and showing your own cursor (an emoji or SVG etc).
 
 This is generally not recommended, as it makes a11y worse, the cursor may fail to load, and there is discontinuity for the user when entering/leaving the window. However, in certain contexts (fullscreen apps etc), showing an in-app cursor may help with pointing prescision and game feedback.
-
-### Useful CSS
-
-- `touchAction: 'none'`
