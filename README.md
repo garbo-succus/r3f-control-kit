@@ -11,6 +11,67 @@ We have found "kitchen sink" camera controllers to be difficult to integrate int
 
 Rather than ship an entire controller, we aim to provide composable pieces for building one, patterns for common requirements, and boilerplate to get started with.
 
+## Example
+
+```js
+import { Canvas, useThree } from '@react-three/fiber'
+import { create } from 'zustand'
+import {
+  ControlRig,
+  SphericalCamera,
+  bitmaskToArray,
+  normalizeCoords
+} from 'control-kit'
+
+const cameraConfig = {
+  minR: 1,
+  maxR: Infinity,
+  minTheta: Math.PI / 16,
+  maxTheta: Math.PI / 2
+}
+
+const useCamera = create((set) => ({
+  origin: [0, 0, 0],
+  coords: [0, 0, 0]
+}))
+
+const eventHandler = ({ buttons, movementX, movementY }) => {
+  const {
+    origin,
+    coords: [r, theta, phi]
+  } = useCamera.getState()
+  const [leftButton, rightButton] = bitmaskToArray(buttons)
+  if (leftButton) {
+    const coords = normalizeCoords(cameraConfig, [
+      r,
+      theta + movementY / 100,
+      phi - movementX / 100
+    ])
+    useCamera.setState({ origin, coords })
+  }
+}
+
+const OrbitControls = () => {
+  const target = useThree((three) => three.gl.domElement) // Canvas DOM element
+  return (
+    <>
+      <SphericalCamera updateStream={useCamera.subscribe} />
+      <ControlRig
+        target={target}
+        onEvent={eventHandler}
+        eventTypes={['pointermove']}
+      />
+    </>
+  )
+}
+
+export const App = () => (
+  <Canvas>
+    <OrbitControls />
+  </Canvas>
+)
+```
+
 ## API: Camera
 
 These functions are specifically for handling 3D cameras
