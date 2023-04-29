@@ -1,6 +1,6 @@
-# 🕹️control-kit
+# 🕹️ control-kit
 
-This is a toolkit for implementing your own react-three-fiber camera controls.
+This is a toolkit for implementing your own DOM gestures and react-three-fiber camera controls.
 
 ## Rationale
 
@@ -225,15 +225,19 @@ const [r, theta, phi] = normalizeCoords(
 
 ## Other discussion
 
-### Trackpad multitouch `wheel` events
+### Trackpad `wheel` events
 
-Many laptop trackpads support multitouch gestures, like 2-finger-swipes and pinch zooming.
-Firefox and Chrome handle them by setting `altKey`/`ctrlKey` to true.
+Most laptop trackpads support multitouch gestures.
 
-- `wheelEvent.altKey`: `true` when 2-finger-swiping (or when alt key being pressed)
-- `wheelEvent.ctrlKey`: `true` when pinch-zooming (or when ctrl key being pressed)
+Firefox and Chrome handle them as `wheelEvent`s with `ctrlKey: true`.
 
-Safari has more advanced support via the proprietary `gesturestart`/`gesturechange`/`gestureend` events; unfortunately the author has no experience with these. It may be desirable to shim Firefox/Chrome behavior where possible.
+- 2-finger swipes behave like 2D mousewheel events (`deltaX`, `deltaY`).
+- Pinch-zooming happens in the `deltaZ` direction.
+- Rotation is not supported.
+
+Safari has more advanced support via the proprietary `gesturestart`/`gesturechange`/`gestureend` events; unfortunately the author has no experience with these. It may be desirable to shim Firefox/Chrome wheel event behavior where possible, and to treat rotation like multitouch pointer events.
+
+It is recommended to show the "ctrl" key as a wheel modifier key in keyboard config interfaces, but to prevent it from being changed.
 
 ### Useful CSS
 
@@ -246,4 +250,4 @@ This can be visualized here: <https://rsms.me/projects/pointer-latency/>
 
 It is possible to mask this latency by hiding the system cursor and showing your own cursor (an emoji or SVG etc).
 
-This is generally not recommended, as it makes a11y worse, the cursor may fail to load, and there is discontinuity for the user when entering/leaving the window. However, in certain contexts (fullscreen apps etc), showing an in-app cursor may help with pointing prescision and game feedback.
+This is generally not recommended, as it makes a11y worse, the cursor may fail to load, and there is discontinuity for the user when entering/leaving the window. However, in certain contexts (fullscreen apps etc), showing an in-app cursor can help with pointing precision and game feedback.
