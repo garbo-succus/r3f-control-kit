@@ -1,6 +1,6 @@
-# useState example
+# `useState` example
 
-useState is more idiomatic, but not recommended, as diffing adds a lot of overhead.
+`useState` is idiomatic, but not recommended, as reconciliation adds a lot of overhead.
 
 This might change in a future version of React with auto-memoizing and immutable data.
 
