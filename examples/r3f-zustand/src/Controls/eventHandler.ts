@@ -1,6 +1,5 @@
-import { normalizeCoords, bitmaskToArray } from '../control-kit'
+import { normalizeCoords, bitmaskToArray, getScreenXY } from '../control-kit'
 import { useCameraConfig, updateCamera } from './cameraState'
-import { getScreenXY } from './helpers'
 
 export const eventHandler = (event) => {
   switch (event.type) {
@@ -21,7 +20,14 @@ export const handlePointer =
     const [leftButton, rightButton, middleButton] = bitmaskToArray(buttons)
 
     // Simple (imperfect) way to scale mouse movement to camera movement
-    const scaling = 100 // TODO: Match pointer movement to on-screen movement
+    // TODO: Match pointer movement to origin movement when looking straight down
+    //   Set the camera coords to [10, Math.PI / 2, 0] (i.e. looking straight down).
+    //   Pick a reference point at coords [0, 0, 0] and move the camera (origin [x, , z]).
+    //   The reference point should follow the cursor position exactly throughout the entire gesture.
+    //   Try the same at coords [100, Math.PI / 2, 0] etc.
+    //   NB: We want to ignore theta when gesturing along the screen Y axis,
+    //   so that pan gesture speed is always consistent regardless of camera rotation.
+    const scaling = 100
 
     // Rotate camera (coords)
     if (leftButton) {

@@ -24,7 +24,7 @@ export const useCamera = create(() => ({
 //
 //   export const useCamera = create((set) => ({
 //     origin: useCameraConfig.getState().defaultOrigin,
-//     useCameraConfig.getState().defaultCoords,
+//     coords: useCameraConfig.getState().defaultCoords,
 //     updateCamera: (updater: Function) =>
 //       set(
 //         (state) => updater(state) ?? {} // Ignore null/undefined

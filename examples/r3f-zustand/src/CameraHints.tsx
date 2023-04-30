@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
 
 // Updates to this component are slower,
-// as they must go through Reacts reconciliation system.
+// as they must pass through Reacts reconciliation system.
 export const CameraHintDeclarative = ({ origin }) => {
   return (
     <group position={origin}>
@@ -13,8 +13,7 @@ export const CameraHintDeclarative = ({ origin }) => {
   )
 }
 
-// Updates to this component are faster,
-// as they bypass Reacts reconciliation system.
+// Updates to this component are faster, as they bypass React reconciliation.
 // The downside is far less maintainable code.
 export const CameraHintImperative = ({ updateStream }) => {
   const ref = useRef()

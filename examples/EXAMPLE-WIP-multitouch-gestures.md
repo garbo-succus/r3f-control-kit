@@ -1,8 +1,10 @@
 # (Multitouch) gestures - WIP
 
-This gesture handler works by processing pointer events in a ~~[Flyd](https://github.com/paldepind/flyd)~~ reducer.
+This gesture handler works by processing pointer events in a [Flyd](https://github.com/paldepind/flyd) reducer.
 
 ## Planned
+
+I hope to implement these before September 2023:
 
 - short-press (tap)
 - drag
@@ -10,25 +12,27 @@ This gesture handler works by processing pointer events in a ~~[Flyd](https://gi
 
 ## Unplanned
 
-These probably won't be implemented without contributions or sponsorship:
+These are out-of-scope (barring contributions, sponsorship, or trivial implementation):
 
 - long-press
 - 2-finger swipe
 - double-short-press (doubletap)
-- throw (finish a drag or 2-finger swipe over a velocity threshold)
+- n-short-press (improved doubletap with any number of taps)
+- throw (finish a drag or 2+-finger swipe over a velocity threshold)
 - n-finger pinch + rotation, swipe (currently we ignore everything except the first 2 fingers)
 - n-finger drag (multiple fingers dragging different things simultaneously)
-- n-short-press (doubletap but with any number of taps)
-- n-t-press (doubletap but with any number of taps, of any time length, like morse code)
+- n-t-press (improved doubletap with any number of taps, of any time length - like morse code)
+- simultaneous independant pen input
 
-These would be cool to have, but aren't planned, and would require fesability research:
+These would be cool to have, but aren't planned, and would require feasibility research:
 
-- n-hand 2-finger pinch + rotation, swipe (treat each pinch-zoom/swipe within an area approx the radius of a human hand as an individual gesture)
 - glyphs (drag or use a pen to paint a shape; fuzzy match shape when finished)
+- n-hand 2-finger pinch + rotation, swipe (treat each pinch-zoom/swipe within an area approx the radius of a human hand as an individual gesture)
+- n-hand 2-finger pinch + rotation, swipe, with n-finger tapping (simulate a mouse using your hand).
 
-## WORK IN PROGRESS
+## 🚧 WORK IN PROGRESS 🚧
 
-This is some code from a prior multitouch implementation.
+This is some old code from a prior multitouch implementation.
 I want to break it up, and if possible reduce or eliminate the dependancy on Flyd.
 
 ### `types.d.ts`
@@ -218,6 +222,8 @@ export default gesturestream
 ```
 
 ### `useControls.jsx`
+
+This is application-specific code
 
 ```js
 import { handlers } from 'r3f-orbit-controls'

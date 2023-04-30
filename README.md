@@ -4,14 +4,17 @@ This is a toolkit for implementing DOM gestures and react-three-fiber camera con
 
 ## Status: Alpha
 
-This library is currently awaiting feedback.
-Please DM me (neftaly) on the Poimandres discord with any comments or questions.
+This library is brand new and currently awaiting feedback.
+Please DM me (neftaly) on the Poimandres discord with any comments, questions, or encouragement.
 
 - Incomplete types
 - No tests
-- No gestures
-- These exports will probably be renamed:
+- No gestures <./examples/EXAMPLE-WIP-multitouch-gestures.md>
+- These functions will be renamed:
   - `normalizeCoords`
+  - `getScreenXY`
+- These functions will have their signature (args, arg order) changed
+  - `getScreenXY`
 - Major API changes not expected
 
 ## Rationale
@@ -226,6 +229,8 @@ For further discussion see <./examples/EXAMPLE-React-props-useState.md>.
 
 ### `normalizeCoords`
 
+**Note:** This function will be renamed in the future.
+
 This function takes a `coords` array and:
 
 - Constrains `r` (min/max distance to/from origin)
@@ -243,6 +248,14 @@ const [r, theta, phi] = normalizeCoords(
   coords
 )
 ```
+
+### `getScreenXY`
+
+**Note:** This function will be renamed in the future.
+
+**Note:** The arguments and return values for this function will be changed in the future.
+
+This function takes `movementX`, `movementY` from a PointerEvent and rotates them around `phi`.
 
 ## Notes
 
@@ -263,7 +276,7 @@ Safari has more advanced support via the proprietary `gesturestart`/`gesturechan
 - A shim for Firefox/Chrome-style wheel event behavior in Safari should be found or made available.
 - An example handler for Safari gesture events should be made available.
 
-2-finger-swipes can travel in both X and Y directions simultaneously, however the gesture may have to be initiated with diagonal touchpad movement (depending on firmware), otherwise it may only move along one axis. Users should be made aware of this in documentation or onboarding.
+2-finger-swipes can travel in both X and Y directions simultaneously, however the gesture may have to be initiated with diagonal touchpad movement (depending on firmware), otherwise it may only move along one axis. Users should be made aware of this in onboarding.
 
 It is recommended to show the "ctrl" key as a wheel modifier key in keyboard config interfaces, but to prevent it from being changed.
 
