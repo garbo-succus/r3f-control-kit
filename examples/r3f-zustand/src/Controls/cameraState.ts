@@ -21,6 +21,7 @@ export const useCamera = create(() => ({
 }))
 
 // If you were to keep the updateCamera action inside your Zustand state:
+//
 //   export const useCamera = create((set) => ({
 //     origin: useCameraConfig.getState().defaultOrigin,
 //     useCameraConfig.getState().defaultCoords,

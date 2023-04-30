@@ -1,5 +1,6 @@
 import { normalizeCoords, bitmaskToArray } from '../control-kit'
 import { useCameraConfig, updateCamera } from './cameraState'
+import { getScreenXY } from './helpers'
 
 export const eventHandler = (event) => {
   switch (event.type) {
@@ -35,28 +36,11 @@ export const handlePointer =
 
     // Move camera (origin)
     if (rightButton) {
-      // TODO: Movement should be relative to camera phi
-      const origin = [x + movementX / scaling, y, z + movementY / scaling]
+      const screenXY = getScreenXY({ movementX, movementY, phi })
+        // TODO: Remove this when we fix scaling
+        .map((v: number) => (v * r) / (scaling * 10)) // Move faster as we move out further
+      const origin = [x - screenXY[1], y, z + screenXY[0]]
       return { origin }
-
-      // import { Vector2 } from 'three'
-      // import { actions, CameraState } from 'r3f-orbit-camera'
-
-      // const handleMoveVector = new Vector2() // Reusable vector (to save on GC)
-      // const vector00 = new Vector2(0, 0)
-
-      // const move =
-      //   (deltaXY) =>
-      //   ({ origin: [oldX, y, oldZ], coords: [r, , phi] }: CameraState) => {
-      //     const screenXY = handleMoveVector
-      //       .set(...deltaXY)
-      //       .rotateAround(vector00, -phi) // Rotate screen X/Y coords to match camera rotation
-      //       .toArray()
-      //       .map((v: number) => (v * r) / 1000) // Move faster as we move out further
-      //     const z = oldZ + screenXY[0]
-      //     const x = oldX - screenXY[1]
-      //     return { origin: [x, y, z] }
-      //   }
     }
 
     // Reset camera
