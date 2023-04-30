@@ -216,3 +216,166 @@ const gesturestream = (target, options) =>
 
 export default gesturestream
 ```
+
+### `useControls.jsx`
+
+```js
+import { handlers } from 'r3f-orbit-controls'
+import { useObjectStore } from 'utils/Interactable'
+import { map, compose, sort, assocPath } from 'ramda'
+import { create } from 'zustand'
+import { Raycaster, Vector2 } from 'three'
+import useStore from 'model'
+
+const coords = new Vector2()
+const raycaster = new Raycaster()
+const updateRaycaster = (center, targetSize, camera) => {
+  const x = (center[0] / targetSize[0]) * 2 - 1
+  const y = -(center[1] / targetSize[1]) * 2 + 1
+  coords.set(x, y)
+  raycaster.setFromCamera(coords, camera)
+  return raycaster
+}
+
+// Get a list of object-raycaster intersections
+const getIntersects = (raycaster, firstHitOnly) => {
+  const { objects } = useObjectStore.getState()
+  // Bubble up to find the parent Interactable group
+  const getInteractables = (object) => {
+    if (!object) return []
+    const { handlers } = objects[object.uuid] || {}
+    if (handlers) return [handlers, ...getInteractables(object.parent)]
+    return getInteractables(object.parent)
+  }
+  const intersects = (() => {
+    raycaster.firstHitOnly = !!firstHitOnly
+    const i = raycaster.intersectObjects(
+      Object.values(objects).map((o) => o.object),
+      true
+    )
+    raycaster.firstHitOnly = false
+    return i
+  })()
+  return compose(
+    map((intersection) => ({
+      intersection,
+      handlers: getInteractables(intersection.object)
+    })),
+    sort((a, b) => {
+      // Sort by depthTest = false (materials rendered on top)
+      const dtA = a.object.material?.depthTest
+      const dtB = b.object.material?.depthTest
+      if (!dtA || !dtB) {
+        if (dtA) return 1
+        if (dtB) return -1
+      }
+      // Sort by renderOrder (like z-index, but only works when depthTest=false)
+      const roA = (dtA && a.object.renderOrder) || 0
+      const roB = (dtB && b.object.renderOrder) || 0
+      if (roA || roB) return roA - roB
+      // Sort by distance from camera
+      return a.distance - b.distance
+    })
+  )(intersects)
+}
+
+// Trigger onGesture event on targetObject with args
+// TODO: Only have 1 handler per object
+const onGesture = (targetObject, ...args) =>
+  targetObject?.handlers[0]?.onGesture?.(...args)
+
+const useControls = create((set, get) => ({
+  isHovering: false,
+  targetObject: undefined,
+  isGesturing: false,
+
+  handleGesture: (onTapMissed, threecamera) => (e) => {
+    // Decide what to do with an onGesture event.
+    // Generally, we're either updating the camera,
+    // or fowarding pointer events to the handlers on a Piece.
+    const { event, gesture } = e
+    const { type, pointerType } = event
+    const {
+      center,
+      targetSize,
+      touches,
+      buttons: [leftButton, rightButton, middleButton]
+    } = gesture
+    const raycaster = updateRaycaster(center, targetSize, threecamera)
+    const isGesturing = touches > 0 || event.buttons !== 0
+    const isHovering = getIntersects(raycaster, true).length > 0
+    const { dragToPanCamera } = useStore.getState().settings
+
+    const sendFakePointercancelEvent = (e, raycaster) =>
+      set(({ targetObject }) => {
+        onGesture(
+          targetObject,
+          assocPath(['event', 'type'], 'pointercancel', e),
+          raycaster
+        )
+        return { targetObject: undefined, isGesturing, isHovering }
+      })
+
+    if (type === 'wheel') {
+      handlers.handleWheel(event)
+    }
+
+    if (
+      type === 'pointerdown' &&
+      touches === 2 &&
+      pointerType === 'touch' &&
+      get().targetObject
+    ) {
+      // Drag started, but gesture became a multitouch
+      return sendFakePointercancelEvent(e, raycaster)
+    }
+
+    if (type === 'pointermove') {
+      if (pointerType === 'touch' && touches === 2) {
+        handlers.handlePinch(gesture)
+      } else if (rightButton) {
+        handlers.handleRotate(gesture)
+      } else if (leftButton || middleButton || pointerType === 'touch') {
+        const { targetObject } = get()
+        if (
+          middleButton ||
+          (!targetObject && (dragToPanCamera || !leftButton))
+        ) {
+          handlers.handleMove(gesture)
+        } else {
+          onGesture(targetObject, e, raycaster)
+        }
+      }
+    } else if (touches < 2) {
+      if (type === 'pointerdown') {
+        const intersects = getIntersects(raycaster)
+        if (intersects.length > 0) {
+          const targetObject = intersects[0]
+          onGesture(targetObject, e, raycaster)
+          return set((state) => ({ targetObject, isGesturing, isHovering }))
+        }
+      } else if (type === 'pointerup' || type === 'pointercancel') {
+        return set(({ targetObject }) => {
+          if (gesture.wasTap && !targetObject) {
+            onTapMissed(e, raycaster)
+          } else {
+            onGesture(targetObject, e, raycaster)
+          }
+          return { targetObject: undefined, isGesturing, isHovering }
+        })
+      } else if (
+        type === 'pointerenter' &&
+        !leftButton &&
+        pointerType !== 'touch' &&
+        get().targetObject
+      ) {
+        // User dragged out-of-bounds then released cursor
+        return sendFakePointercancelEvent(e, raycaster)
+      }
+    }
+    return set((state) => ({ isGesturing, isHovering }))
+  }
+}))
+
+export default useControls
+```

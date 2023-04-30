@@ -1,9 +1,6 @@
 import { normalizeCoords, bitmaskToArray } from '../control-kit'
 import { useCameraConfig, updateCamera } from './cameraState'
 
-// This is a usecase we want to support, that is currently implemented with a hack
-const SUPPORT_WHEEL_PLUS_ALTKEY_PANNING_HACK = true
-
 export const eventHandler = (event) => {
   switch (event.type) {
     case 'pointerup':
@@ -38,18 +35,28 @@ export const handlePointer =
 
     // Move camera (origin)
     if (rightButton) {
-      // WARNING: Changing camera movement (panning) to not use `rightButton` will break `handleWheel` altKey movement.
-      //   If you don't want to use `rightButton` to pan the camera, and you don't need wheel+altKey support, set `SUPPORT_WHEEL_PLUS_ALTKEY_PANNING_HACK` to false.
-      //   Otherwise, you must manually update the fake event in the `handleWheel` `altKey`  branch to trigger a pan.
-      // TODO: Fix this!
-      if (!rightButton && SUPPORT_WHEEL_PLUS_ALTKEY_PANNING_HACK) {
-        throw new Error(
-          'SUPPORT_WHEEL_PLUS_ALTKEY_PANNING_HACK must be disabled if rightButton is not used to move camera origin'
-        )
-      }
       // TODO: Movement should be relative to camera phi
       const origin = [x + movementX / scaling, y, z + movementY / scaling]
       return { origin }
+
+      // import { Vector2 } from 'three'
+      // import { actions, CameraState } from 'r3f-orbit-camera'
+
+      // const handleMoveVector = new Vector2() // Reusable vector (to save on GC)
+      // const vector00 = new Vector2(0, 0)
+
+      // const move =
+      //   (deltaXY) =>
+      //   ({ origin: [oldX, y, oldZ], coords: [r, , phi] }: CameraState) => {
+      //     const screenXY = handleMoveVector
+      //       .set(...deltaXY)
+      //       .rotateAround(vector00, -phi) // Rotate screen X/Y coords to match camera rotation
+      //       .toArray()
+      //       .map((v: number) => (v * r) / 1000) // Move faster as we move out further
+      //     const z = oldZ + screenXY[0]
+      //     const x = oldX - screenXY[1]
+      //     return { origin: [x, y, z] }
+      //   }
     }
 
     // Reset camera
@@ -70,26 +77,18 @@ export const handleWheel = (event: PointerEvent) => (state) => {
   } = event
 
   // Move camera (origin) when alt+wheeling
-  // WARNING: This is currently implemented with a hack!
-  //   If you don't need this, you can safely delete the entire `if` block,
-  //   and any references to `SUPPORT_WHEEL_PLUS_ALTKEY_PANNING_HACK`
-  if (SUPPORT_WHEEL_PLUS_ALTKEY_PANNING_HACK && altKey) {
+  if (altKey) {
     // Swap deltaX/deltaY if user is holding the ctrl key,
     // so that 1-directional mouse scrollwheels can be used to move both forward/back and left/right
     const [deltaX, deltaY] = ctrlKey
       ? [event.deltaY, event.deltaX]
       : [event.deltaX, event.deltaY]
-    //
-    const scaling = 2 // Make alt-wheel movement faster
-    // Pass a fake right-mouse-drag PointerEvent to handlePointer
-    // TODO: HACK: This very fragile; we're just sending a fake right-mouse event.
-    //   Can we use something like a `updateOrigin` function or an `action: 'pan'` Redux reducer instead?
-    return handlePointer({
-      // ...event,
-      buttons: 2,
-      movementX: -deltaX * scaling,
-      movementY: -deltaY * scaling
-    } as PointerEvent)(state)
+    const {
+      origin: [x, y, z]
+    } = state
+    const scaling = 50
+    const origin = [x - deltaX / scaling, y, z - deltaY / scaling]
+    return { origin }
   }
 
   // Rotate camera (coords)
