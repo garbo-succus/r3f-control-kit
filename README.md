@@ -1,6 +1,18 @@
 # 🕹️ control-kit
 
-This is a toolkit for implementing your own DOM gestures and react-three-fiber camera controls.
+This is a toolkit for implementing DOM gestures and react-three-fiber camera controls.
+
+## Status: Alpha
+
+This library is currently awaiting feedback.
+Please DM me (neftaly) on the Poimandres discord with any comments or questions.
+
+- Incomplete types
+- No tests
+- No gestures
+- These exports will probably be renamed:
+  - `normalizeCoords`
+- Major API changes not expected
 
 ## Rationale
 
@@ -13,7 +25,7 @@ Rather than ship an entire controller, we aim to provide composable pieces for b
 
 ## Example
 
-To see a live example, run `npm start`.
+To see a live <./examples/r3f-zustand> example, run `npm start`.
 
 ```js
 import { Canvas, useThree } from '@react-three/fiber'
@@ -244,16 +256,16 @@ Firefox and Chrome handle them as `WheelEvent`s with `ctrlKey: true`.
 - 2-finger pinch (pinch-zooming) happens in the `deltaZ` direction.
 - 2-finger rotation gestures are not supported.
 
-[TODO: Diagram showing 2-finger swipe, pinch, and rotation multitouch gestures]
+[Diagram showing 2-finger swipe, pinch, and rotation multitouch gestures]
 
 Safari has more advanced support via the proprietary `gesturestart`/`gesturechange`/`gestureend` events; unfortunately the author has no experience with these.
 
-- TODO: A shim for Firefox/Chrome-style wheel event behavior in Safari should be found or made available.
-- TODO: An example handler for Safari gesture events should be made available.
+- A shim for Firefox/Chrome-style wheel event behavior in Safari should be found or made available.
+- An example handler for Safari gesture events should be made available.
+
+2-finger-swipes can travel in both X and Y directions simultaneously, however the gesture may have to be initiated with diagonal touchpad movement (depending on firmware), otherwise it may only move along one axis. Users should be made aware of this in documentation or onboarding.
 
 It is recommended to show the "ctrl" key as a wheel modifier key in keyboard config interfaces, but to prevent it from being changed.
-
-2-finger-swipes can travel in both X and Y directions simultaneously, however the gesture may have to be initiated with diagonal touchpad movement (depending on firmware), otherwise it may only go in one direction. Users should be made aware of this in documentation.
 
 ### Useful CSS
 
