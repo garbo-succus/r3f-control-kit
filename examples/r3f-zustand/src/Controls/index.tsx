@@ -43,5 +43,10 @@ export const Controls = () => {
 }
 
 // Export `examples/r3f-zustand/Controls` as a library
-export { useCameraConfig, useCamera, updateCamera } from './cameraState'
+export {
+  useCamera,
+  updateCamera,
+  useCameraConfig,
+  updateCameraConfig
+} from './cameraState'
 export { eventHandler, handlePointer, handleWheel } from './eventHandler'

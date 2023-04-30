@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { useEffect } from 'react'
 
 export const useCameraConfig = create((set) => ({
   minR: 1,
@@ -7,8 +6,14 @@ export const useCameraConfig = create((set) => ({
   minTheta: Math.PI / 16,
   maxTheta: Math.PI / 2,
   defaultOrigin: [0, 0, 0],
-  defaultCoords: [5, Math.PI / 4, Math.PI / 8]
+  defaultCoords: [5, Math.PI / 4, Math.PI / 8],
+  updateCameraConfig: (updater: Function) =>
+    set(
+      (state) => updater(state) ?? {} // Ignore null/undefined
+    )
 }))
+
+export const { updateCameraConfig } = useCameraConfig.getState()
 
 export const useCamera = create(() => ({
   origin: useCameraConfig.getState().defaultOrigin,
