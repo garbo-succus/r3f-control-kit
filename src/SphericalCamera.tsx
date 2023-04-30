@@ -5,16 +5,14 @@ import { PerspectiveCamera } from '@react-three/drei'
 export const SphericalCamera = ({
   makeDefault = true, // Make this the default three camera
   updateStream, // Stream of { origin, coords } updates
-  origin = [0, 0, 0], // Target position
-  coords: [
-    r, // Distance to origin
-    theta, // Polar (up-down) angle
-    phi // Azimuthal (left-right) angle
-  ] = [0, 0, 0],
+  // TODO: Depreciate origin/coords in this type (hopefully we can recommend them in the future)
+  origin, // Target position
+  coords, // Camera rotation
   ...cameraProps
 }) => {
   const groupRef = useRef()
   const cameraRef = useRef()
+  // TODO: Show a development-mode console depreciation warning if `origin`/`coords` is truthy
   useEffect(
     () =>
       // Subscribe to a stream of {origin,coords} updates and imperatively move camera.
@@ -33,6 +31,7 @@ export const SphericalCamera = ({
       }),
     [updateStream, invalidate] // TODO: Invalidate probably shouldn't be a dependency
   )
+  const [r, theta, phi] = coords
   // TODO: Use maths, not a <group> https://github.com/garbo-succus/control-kit/issues/6
   return (
     <group ref={groupRef} position={origin} rotation={[0, phi, theta]}>

@@ -5,7 +5,7 @@ This is a toolkit for implementing your own DOM gestures and react-three-fiber c
 ## Rationale
 
 Camera controls are generally the main way humans interact with 3D apps.
-They must handle multiple input methods (touch, keyboard, mouse, gamepads, XR, etc) but should also get out of the way when not needed.
+They must handle multiple input methods (touch, keyboard, mouse, gamepads, XR, pen, etc) but should also get out of the way when not needed.
 
 We have found "kitchen sink" camera controllers to be difficult to integrate into state management, and easy to outgrow.
 
@@ -42,6 +42,7 @@ const eventHandler = ({ buttons, movementX, movementY }) => {
   } = useCamera.getState()
   const [leftButton, rightButton] = bitmaskToArray(buttons)
   if (leftButton) {
+    // Rotate camera
     const coords = normalizeCoords(cameraConfig, [
       r,
       theta + movementY / 100,
@@ -82,7 +83,7 @@ This convenience component attaches an `onEvent` event handler to a `target` ele
 The `options` prop to is passed to the `addEventListener` call.
 
 `event.preventDefault()` is called on all events in the `preventDefaults` prop.
-See the note in <#addPreventDefaults> for advice on which events to use.
+See the note in <README.md#addPreventDefaults> for advice on which events to use.
 
 ```js
 const App = () => {
@@ -132,6 +133,10 @@ See <https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListen
 
 **Note:** You should avoid using mouse and touch events, as they have been obsoleted by pointer events.
 
+**Note:** You should avoid using `contextmenu` events.
+They are not supported on iOS.
+Unless you have a specific need for `contextmenu`, you should use a right-click or long-press gesture instead.
+
 ```js
 const removeEventListeners = addEventListeners(
   document.getElementById('mydiv'),
@@ -165,15 +170,14 @@ const removePreventDefaults = addPreventDefaults(
 
 ```js
 const types = [
-  // Block ctrl + mousewheel (zoom in/out in most browsers)
-  // Block alt + mousewheel (history gesture in firefox)
+  // Block ctrl + mousewheel (zoom in/out on most browsers)
+  // Block alt + mousewheel (history gesture in Firefox)
   'wheel',
 
   // Block iOS swipe history gesture <https://pqina.nl/blog/blocking-navigation-gestures-on-ios-13-4/>
   'touchstart',
 
-  // This event is not supported in iOS, and should not be used on any platform.
-  // You should use a right-click or long-press gesture instead.
+  // Stop right-clicks from opening the browser context menu
   'contextmenu'
 ]
 ```
@@ -201,8 +205,10 @@ const [
 This component creates a `<PerspectiveCamera>` looking at `origin`, rotated by `coords`.
 It accepts all PerspectiveCamera props (`makeDefault` is true by default).
 
-Note that there is overhead to updating the `origin` & `coords` props directly, as each change must pass through react diffing.
-The `updateStream` prop is provided as an escape hatch to bypass diffing with imperative `{origin,coords}` updates.
+For performance reasons you should use `updateStream` instead of the `origin` & `coords` props.
+
+The `updateStream` prop is provided as an escape hatch to bypass React reconciliation with imperative `{origin?,coords?}` updates.
+For further discussion see <./examples/EXAMPLE-React-props-useState.md>.
 
 ### `normalizeCoords`
 
@@ -230,11 +236,13 @@ const [r, theta, phi] = normalizeCoords(
 
 Most laptop trackpads support multitouch gestures.
 
-Firefox and Chrome handle them as `wheelEvent`s with `ctrlKey: true`.
+Firefox and Chrome handle them as `WheelEvent`s with `ctrlKey: true`.
 
-- 2-finger-swipes behave like 2D mousewheel events (`deltaX`, `deltaY`).
-- Pinch-zooming happens in the `deltaZ` direction.
-- Rotation is not supported.
+- `2-finger-swipe`s behave like 2D mousewheel events (`deltaX`, `deltaY`).
+- `2-finger-pinch` (pinch-zooming) happens in the `deltaZ` direction.
+- `2-finger-rotation` gestures are not supported.
+
+[Diagram showing 2-finger swipe, pinch, and rotation multitouch gestures]
 
 Safari has more advanced support via the proprietary `gesturestart`/`gesturechange`/`gestureend` events; unfortunately the author has no experience with these.
 It may be desirable to shim Firefox/Chrome wheel event behavior where possible, and to treat rotation like multitouch pointer events, until a suitable handler for Safari gesture events is available.
