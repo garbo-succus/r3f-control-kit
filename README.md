@@ -13,6 +13,8 @@ Rather than ship an entire controller, we aim to provide composable pieces for b
 
 ## Example
 
+To see a live example, run `npm start`.
+
 ```js
 import { Canvas, useThree } from '@react-three/fiber'
 import { create } from 'zustand'
@@ -238,14 +240,16 @@ Most laptop trackpads support multitouch gestures.
 
 Firefox and Chrome handle them as `WheelEvent`s with `ctrlKey: true`.
 
-- `2-finger-swipe`s behave like 2D mousewheel events (`deltaX`, `deltaY`).
-- `2-finger-pinch` (pinch-zooming) happens in the `deltaZ` direction.
-- `2-finger-rotation` gestures are not supported.
+- 2-finger swipes behave like 2D mousewheel events (`deltaX`, `deltaY`).
+- 2-finger pinch (pinch-zooming) happens in the `deltaZ` direction.
+- 2-finger rotation gestures are not supported.
 
-[Diagram showing 2-finger swipe, pinch, and rotation multitouch gestures]
+[TODO: Diagram showing 2-finger swipe, pinch, and rotation multitouch gestures]
 
 Safari has more advanced support via the proprietary `gesturestart`/`gesturechange`/`gestureend` events; unfortunately the author has no experience with these.
-It may be desirable to shim Firefox/Chrome wheel event behavior where possible, and to treat rotation like multitouch pointer events, until a suitable handler for Safari gesture events is available.
+
+- TODO: A shim for Firefox/Chrome-style wheel event behavior in Safari should be found or made available.
+- TODO: An example handler for Safari gesture events should be made available.
 
 It is recommended to show the "ctrl" key as a wheel modifier key in keyboard config interfaces, but to prevent it from being changed.
 

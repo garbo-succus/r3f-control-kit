@@ -10,7 +10,8 @@
     "build": "tsc",
     "test": "tsc --noEmit && echo 'no tests'",
     "dev": "tsc --watch --pretty",
-    "format": "prettier src --write"
+    "format": "prettier src --write",
+    "start": "cd examples/r3f-zustand && npm install && npm run dev"
   },
   "dependencies": {
     "@react-three/drei": ">=9.53",
