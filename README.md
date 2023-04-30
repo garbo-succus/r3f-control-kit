@@ -28,7 +28,7 @@ Rather than ship an entire controller, we aim to provide composable pieces for b
 
 ## Example
 
-To see a live <./examples/r3f-zustand> example, run `npm start`.
+To see a live <./examples/r3f-zustand> example, run `npm start`, or visit the [codesandbox](https://codesandbox.io/p/github/garbo-succus/control-kit/draft/cool-browser?workspaceId=ce9f8d49-1309-4d8b-b523-e0979bfc78ca&selection=%5B%7B%22endColumn%22%3A26%2C%22endLineNumber%22%3A11%2C%22startColumn%22%3A26%2C%22startLineNumber%22%3A11%7D%5D&file=%2Fpackage.json).
 
 ```js
 import { Canvas, useThree } from '@react-three/fiber'
