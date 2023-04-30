@@ -5,7 +5,8 @@ import { useCamera, updateCamera } from './cameraState'
 import { eventHandler } from './eventHandler'
 
 export const Controls = () => {
-  const target = useThree((three) => three.gl.domElement) // Get r3f canvas element
+  // Get r3f canvas element
+  const target = useThree((three) => three.gl.domElement)
   // Force the first updateStream state update to fire
   useEffect(() => void updateCamera(() => ({})), [])
   return (

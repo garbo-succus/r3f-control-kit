@@ -7,7 +7,7 @@ export const useCameraConfig = create((set) => ({
   minTheta: Math.PI / 16,
   maxTheta: Math.PI / 2,
   defaultOrigin: [0, 0, 0],
-  defaultCoords: [5, Math.PI / 4, 0]
+  defaultCoords: [5, Math.PI / 4, Math.PI / 8]
 }))
 
 export const useCamera = create(() => ({
@@ -15,7 +15,7 @@ export const useCamera = create(() => ({
   coords: useCameraConfig.getState().defaultCoords
 }))
 
-// If you wish to keep the updateCamera action inside your Zustand state:
+// If you were to keep the updateCamera action inside your Zustand state:
 //   export const useCamera = create((set) => ({
 //     origin: useCameraConfig.getState().defaultOrigin,
 //     useCameraConfig.getState().defaultCoords,
@@ -27,7 +27,7 @@ export const useCamera = create(() => ({
 //
 //   export const { updateCamera } = useCamera.getState()
 
-// Instead, we're doing a manual imperative update for per:
+// Instead, we're doing a manual imperative update (for perf etc)
 export const updateCamera = (updater) => {
   const oldState = useCamera.getState()
   const state = updater(oldState)
