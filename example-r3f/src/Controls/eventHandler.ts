@@ -1,5 +1,5 @@
 import { normalizeCoords, bitmaskToArray } from '../control-kit'
-import { cameraConfig, updateCamera } from './cameraState'
+import { useCameraConfig, updateCamera } from './cameraState'
 
 export const eventHandler = (event) => {
   switch (event.type) {
@@ -22,6 +22,7 @@ export const handlePointer =
 
     // Rotate camera
     if (leftButton) {
+      const cameraConfig = useCameraConfig.getState()
       const coords = normalizeCoords(cameraConfig, [
         r,
         theta + movementY / scaling,
@@ -39,9 +40,10 @@ export const handlePointer =
 
     // Reset camera
     if (middleButton) {
+      const { defaultOrigin, defaultCoords } = useCameraConfig.getState()
       return {
-        origin: cameraConfig.defaultOrigin,
-        coords: cameraConfig.defaultCoords
+        origin: defaultOrigin,
+        coords: defaultCoords
       }
     }
   }

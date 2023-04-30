@@ -1,10 +1,13 @@
+import { useEffect } from 'react'
 import { useThree } from '@react-three/fiber'
 import { ControlRig, SphericalCamera } from '../control-kit'
-import { useCamera } from './cameraState'
+import { useCamera, updateCamera } from './cameraState'
 import { eventHandler } from './eventHandler'
 
 export const Controls = () => {
   const target = useThree((three) => three.gl.domElement) // Get r3f canvas element
+  // Force the first updateStream state update to fire
+  useEffect(() => void updateCamera(() => ({})), [])
   return (
     <>
       {/*
@@ -37,3 +40,7 @@ export const Controls = () => {
     </>
   )
 }
+
+// Export `examples/r3f-zustand/Controls` as a library
+export { useCameraConfig, useCamera, updateCamera } from './cameraState'
+export { eventHandler, handlePointer, handleWheel } from './eventHandler'

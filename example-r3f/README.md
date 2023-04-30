@@ -1,2 +1,4 @@
-This is an example of an orbit camera controller, implemented with Zustand and react-three-fiber.
-To try it out, `npm install && npm run dev`.
+# example-r3f
+
+This is an example of an orbit camera controller in react-three-fiber,
+using Zustand for state management.

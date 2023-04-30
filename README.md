@@ -223,7 +223,7 @@ const [r, theta, phi] = normalizeCoords(
 )
 ```
 
-## Other discussion
+## Notes
 
 ### Trackpad `wheel` events
 
@@ -235,7 +235,7 @@ Firefox and Chrome handle them as `wheelEvent`s with `ctrlKey: true`.
 - Pinch-zooming happens in the `deltaZ` direction.
 - Rotation is not supported.
 
-Safari has more advanced support via the proprietary `gesturestart`/`gesturechange`/`gestureend` events; unfortunately the author has no experience with these. It may be desirable to shim Firefox/Chrome wheel event behavior where possible, and to treat rotation like multitouch pointer events.
+Safari has more advanced support via the proprietary `gesturestart`/`gesturechange`/`gestureend` events; unfortunately the author has no experience with these. It may be desirable to shim Firefox/Chrome wheel event behavior where possible, and to treat rotation like multitouch pointer events, until a suitable handler for Safari gesture events is available.
 
 It is recommended to show the "ctrl" key as a wheel modifier key in keyboard config interfaces, but to prevent it from being changed.
 
