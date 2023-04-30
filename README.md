@@ -201,7 +201,8 @@ const [
 This component creates a `<PerspectiveCamera>` looking at `origin`, rotated by `coords`.
 It accepts all PerspectiveCamera props (`makeDefault` is true by default).
 
-Note that there is overhead to updating the `origin` & `coords` props directly, as each change must pass through react diffing. The `updateStream` prop is provided as an escape hatch to bypass diffing with imperative `{origin,coords}` updates.
+Note that there is overhead to updating the `origin` & `coords` props directly, as each change must pass through react diffing.
+The `updateStream` prop is provided as an escape hatch to bypass diffing with imperative `{origin,coords}` updates.
 
 ### `normalizeCoords`
 
@@ -231,13 +232,16 @@ Most laptop trackpads support multitouch gestures.
 
 Firefox and Chrome handle them as `wheelEvent`s with `ctrlKey: true`.
 
-- 2-finger swipes behave like 2D mousewheel events (`deltaX`, `deltaY`).
+- 2-finger-swipes behave like 2D mousewheel events (`deltaX`, `deltaY`).
 - Pinch-zooming happens in the `deltaZ` direction.
 - Rotation is not supported.
 
-Safari has more advanced support via the proprietary `gesturestart`/`gesturechange`/`gestureend` events; unfortunately the author has no experience with these. It may be desirable to shim Firefox/Chrome wheel event behavior where possible, and to treat rotation like multitouch pointer events, until a suitable handler for Safari gesture events is available.
+Safari has more advanced support via the proprietary `gesturestart`/`gesturechange`/`gestureend` events; unfortunately the author has no experience with these.
+It may be desirable to shim Firefox/Chrome wheel event behavior where possible, and to treat rotation like multitouch pointer events, until a suitable handler for Safari gesture events is available.
 
 It is recommended to show the "ctrl" key as a wheel modifier key in keyboard config interfaces, but to prevent it from being changed.
+
+2-finger-swipes can travel in both X and Y directions simultaneously, however the gesture may have to be initiated with diagonal touchpad movement (depending on firmware), otherwise it may only go in one direction. Users should be made aware of this in documentation.
 
 ### Useful CSS
 
