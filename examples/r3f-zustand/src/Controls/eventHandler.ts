@@ -29,8 +29,17 @@ export const handlePointer =
     //   so that pan gesture speed is always consistent regardless of camera rotation.
     const scaling = 100
 
-    // Rotate camera (coords)
+    // Move camera (origin)
     if (leftButton) {
+      const screenXY = getScreenXY({ movementX, movementY, phi })
+        // TODO: Remove this when we fix scaling
+        .map((v: number) => (v * r) / (scaling * 10)) // Move faster as we move out further
+      const origin = [x - screenXY[1], y, z + screenXY[0]]
+      return { origin }
+    }
+
+    // Rotate camera (coords)
+    if (rightButton) {
       const cameraConfig = useCameraConfig.getState()
       const coords = normalizeCoords(cameraConfig, [
         r,
@@ -38,15 +47,6 @@ export const handlePointer =
         phi - movementX / scaling
       ])
       return { coords }
-    }
-
-    // Move camera (origin)
-    if (rightButton) {
-      const screenXY = getScreenXY({ movementX, movementY, phi })
-        // TODO: Remove this when we fix scaling
-        .map((v: number) => (v * r) / (scaling * 10)) // Move faster as we move out further
-      const origin = [x - screenXY[1], y, z + screenXY[0]]
-      return { origin }
     }
 
     // Reset camera
