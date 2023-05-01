@@ -16,9 +16,9 @@ These are out-of-scope (barring contributions, sponsorship, or trivial implement
 
 - long-press
 - 2-finger swipe
+- throw (finish a drag or 2+-finger swipe over a velocity threshold)
 - double-short-press (doubletap)
 - n-short-press (improved doubletap with any number of taps)
-- throw (finish a drag or 2+-finger swipe over a velocity threshold)
 - n-finger pinch + rotation, swipe (currently we ignore everything except the first 2 fingers)
 - n-finger drag (multiple fingers dragging different things simultaneously)
 - n-t-press (improved doubletap with any number of taps, of any time length - like morse code)
@@ -32,8 +32,20 @@ These would be cool to have, but aren't planned, and would require feasibility r
 
 ## 🚧 WORK IN PROGRESS 🚧
 
-This is some old code from a prior multitouch implementation.
-I want to break it up, and if possible reduce or eliminate the dependancy on Flyd.
+This reducer could take a stream of DOM PointerEvents.
+It would then output a stream of GestureStream events (and optionally forward incoming events).
+It may be better to output React-style events (and follow their design descisions), as long as this doesn't make interop worse.
+
+GestureStream events could have an API similar to PointerEvents, i.e. we treat gestures just like they were proprietary PointerEvents input devices.
+
+We could take a similar approach for turning WheelEvents and Safari touchpad gesture events into GestureStream TouchpadEvents or something.
+
+We should check the Gamepad, Keyboard, and XR events and see if they could also be treated like proprietary PointerEvents (or visa-versa)
+
+<hr />
+
+_This is some old code from a prior multitouch implementation._
+_I want to break it up, refactor, and if possible reduce or eliminate the dependancy on Flyd._
 
 ### `types.d.ts`
 
