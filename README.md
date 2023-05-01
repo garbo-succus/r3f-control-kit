@@ -20,7 +20,7 @@ Please DM me (neftaly) on the Poimandres discord with any comments, questions, o
 ## Rationale
 
 Camera controls are generally the main way humans interact with 3D apps.
-They must handle multiple input methods (touch, keyboard, mouse, gamepads, XR, pen, etc) but should also get out of the way when not needed.
+They must handle multiple input methods (touch, keyboard, mouse, gamepads, XR, pen, etc) but should get out of the way when not needed.
 
 We have found "kitchen sink" camera controllers to be difficult to integrate into state management, and easy to outgrow.
 
@@ -47,7 +47,7 @@ const cameraConfig = {
   maxTheta: Math.PI / 2
 }
 
-const useCamera = create((set) => ({
+const useCamera = create(() => ({
   origin: [0, 0, 0],
   coords: [0, 0, 0]
 }))
