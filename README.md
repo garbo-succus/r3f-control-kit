@@ -28,8 +28,7 @@ Rather than ship an entire controller, we aim to provide composable pieces for b
 
 ## Example
 
-To see the full <./examples/r3f-zustand> example, run `npm start`.
-It can also be imported as a standalone controller.
+To see the full importable <./examples/r3f-zustand> example, run `npm start`.
 
 ```js
 import { Canvas, useThree } from '@react-three/fiber'
