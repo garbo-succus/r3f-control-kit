@@ -22,21 +22,21 @@ These are out-of-scope (barring contributions, sponsorship, or trivial implement
 - n-finger pinch + rotation, swipe (currently we ignore everything except the first 2 fingers)
 - n-finger drag (multiple fingers dragging different things simultaneously)
 - n-t-press (improved doubletap with any number of taps, of any time length - like morse code)
-- simultaneous independant pen input
+- simultaneous independent pen input
 
 These would be cool to have, but aren't planned, and would require feasibility research:
 
 - glyphs (drag or use a pen to paint a shape; fuzzy match shape when finished)
 - n-hand 2-finger pinch + rotation, swipe (treat each pinch-zoom/swipe within an area approx the radius of a human hand as an individual gesture)
-- n-hand 2-finger pinch + rotation, swipe, with n-finger tapping (simulate a mouse using your hand).
+- n-hand n-finger gestures (multiple independent multitouch gestures, as long as hands aren't too close together)
 
 ## 🚧 WORK IN PROGRESS 🚧
 
 This reducer could take a stream of DOM PointerEvents.
 It would then output a stream of GestureStream events (and optionally forward incoming events).
-It may be better to output React-style events (and follow their design descisions), as long as this doesn't make interop worse.
+It may be better to output React-style events and follow their design descisions, as long as this doesn't make interop worse.
 
-GestureStream events could have an API similar to PointerEvents, i.e. we treat gestures just like they were proprietary PointerEvents input devices.
+GestureStream events could have an API similar to PointerEvents, i.e. we treat different gestures as proprietary PointerEvents input devices.
 
 We could take a similar approach for turning WheelEvents and Safari touchpad gesture events into GestureStream TouchpadEvents or something.
 

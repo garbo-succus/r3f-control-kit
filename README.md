@@ -13,7 +13,7 @@ Please DM me (neftaly) on the Poimandres discord with any comments, questions, o
 - These functions will be renamed:
   - `normalizeCoords`
   - `getScreenXY`
-- These functions will have their signature (args, arg order) changed
+- These functions will have their signature (args, arg order) changed:
   - `getScreenXY`
 - Major API changes not expected
 
@@ -28,7 +28,8 @@ Rather than ship an entire controller, we aim to provide composable pieces for b
 
 ## Example
 
-To see a live <./examples/r3f-zustand> example, run `npm start`.
+To see the full <./examples/r3f-zustand> example, run `npm start`.
+It can also be imported as a standalone controller.
 
 ```js
 import { Canvas, useThree } from '@react-three/fiber'
@@ -104,7 +105,7 @@ See the note in <README.md#addPreventDefaults> for advice on which events to use
 
 ```js
 const App = () => {
-  const target = useThree((three) => three.gl.domElement) // Get r3f canvas element
+  const target = useThree((three) => three.gl.domElement) // Get r3f canvas DOM element
   return (
     <Canvas>
       <ControlRig
