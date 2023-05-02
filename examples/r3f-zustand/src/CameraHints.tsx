@@ -31,7 +31,7 @@ export const CameraHintImperative = ({ updateStream }) => {
   return (
     <group ref={ref}>
       <mesh>
-        <boxGeometry args={[0.5, 2, 0.5]} />
+        <boxGeometry args={[0.5, 1, 0.5]} />
         <meshStandardMaterial color="red" wireframe />
       </mesh>
     </group>

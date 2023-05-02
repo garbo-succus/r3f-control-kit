@@ -1,9 +1,34 @@
+import { useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Controls, useCamera } from './Controls'
+import {
+  Controls,
+  useCamera,
+  updateCamera,
+  useCameraConfig,
+  updateCameraConfig
+} from './Controls'
 import { CameraHintImperative, CameraHintDeclarative } from './CameraHints'
 
 export default function App() {
   const origin = useCamera((s) => s.origin)
+
+  // NOTE: For complex apps, we recommend copying the entire `examples/r3f-zustand/Controls` directory,
+  //   and editing the initial camera config yourself.
+  //   However, if you're just importing `examples/r3f-zustand/Controls` directly,
+  //   this is a pattern for setting initial state:
+  useEffect(() =>
+    // Set initial camera config; update camera
+    {
+      updateCameraConfig((config) => ({
+        ...config,
+        defaultOrigin: [0, 0.5, 0]
+      }))
+      updateCamera(() => ({
+        origin: useCameraConfig.getState().defaultOrigin,
+        coords: useCameraConfig.getState().defaultCoords
+      }))
+    }, []) // Only run on initial component mount
+
   return (
     <Canvas
       frameloop="demand"
@@ -24,6 +49,7 @@ export default function App() {
       </mesh>
 
       {/* Demonstrate bypassing React reconciliation */}
+      {/* TODO: Force an initial updateStream event to fire */}
       <CameraHintImperative updateStream={useCamera.subscribe} />
       <CameraHintDeclarative origin={origin} />
     </Canvas>

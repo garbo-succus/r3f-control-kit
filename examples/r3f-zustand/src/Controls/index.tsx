@@ -8,7 +8,7 @@ import { eventHandler } from './eventHandler'
 export const Controls = () => {
   // Get r3f canvas element
   const target = useThree((three) => three.gl.domElement)
-  // Force the first updateStream state update to fire
+  // Force an initial updateStream state update to fire
   useEffect(() => void updateCamera(() => ({})), [])
   return (
     <>
