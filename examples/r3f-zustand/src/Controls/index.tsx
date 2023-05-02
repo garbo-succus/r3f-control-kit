@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useThree } from '@react-three/fiber'
-import { ControlRig, SphericalCamera } from '../control-kit'
+// TODO: Remove `TEMPORARY_control-kit` - https://github.com/garbo-succus/control-kit/issues/7
+import { ControlRig, SphericalCamera } from './TEMPORARY_control-kit'
 import { useCamera, updateCamera } from './cameraState'
 import { eventHandler } from './eventHandler'
 

@@ -1,4 +1,5 @@
-import { normalizeCoords, bitmaskToArray, getScreenXY } from '../control-kit'
+// TODO: Remove `TEMPORARY_control-kit` - https://github.com/garbo-succus/control-kit/issues/7
+import { normalizeCoords, bitmaskToArray, getScreenXY } from './TEMPORARY_control-kit'
 import { useCameraConfig, updateCamera } from './cameraState'
 
 export const eventHandler = (event) => {

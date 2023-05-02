@@ -6,8 +6,8 @@ export const SphericalCamera = ({
   makeDefault = true, // Make this the default three camera
   updateStream, // Stream of { origin, coords } updates
   // TODO: Depreciate origin/coords in this type (hopefully we can recommend them in the future)
-  origin, // Target position
-  coords, // Camera rotation
+  origin = [0, 0, 0], // Target position
+  coords = [0, 0, 0], // Camera rotation
   ...cameraProps
 }) => {
   const groupRef = useRef()

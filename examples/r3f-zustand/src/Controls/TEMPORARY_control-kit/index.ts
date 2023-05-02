@@ -1,5 +1,7 @@
-export { ControlRig } from './ControlRig'
+// DOM API
 export { bitmaskToArray, addEventListeners, addPreventDefaults } from './dom'
+export { ControlRig } from './ControlRig'
 
-export { SphericalCamera } from './SphericalCamera'
+// Camera API
 export { normalizeCoords, getScreenXY } from './camera'
+export { SphericalCamera } from './SphericalCamera'

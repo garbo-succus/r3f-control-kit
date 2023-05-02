@@ -3,22 +3,20 @@ import { invalidate } from '@react-three/fiber'
 import { PerspectiveCamera } from '@react-three/drei'
 
 export const SphericalCamera = ({
-  origin = [0, 0, 0], // Target position
-  coords: [
-    r, // Distance to origin
-    theta, // Polar (up-down) angle
-    phi // Azimuthal (left-right) angle
-  ] = [0, 0, 0],
   makeDefault = true, // Make this the default three camera
   updateStream, // Stream of { origin, coords } updates
+  // TODO: Depreciate origin/coords in this type (hopefully we can recommend them in the future)
+  origin = [0, 0, 0], // Target position
+  coords = [0, 0, 0], // Camera rotation
   ...cameraProps
 }) => {
   const groupRef = useRef()
   const cameraRef = useRef()
+  // TODO: Show a development-mode console depreciation warning if `origin`/`coords` is truthy
   useEffect(
     () =>
-      // Take a stream of {origin,coords} updates and imperatively move camera.
-      // Escape hatch for bypassing the React update system (i.e. for animations).
+      // Subscribe to a stream of {origin,coords} updates and imperatively move camera.
+      // Escape hatch for bypassing React diffing.
       updateStream &&
       updateStream(({ origin, coords }) => {
         if (!groupRef.current || !cameraRef.current) return
@@ -31,8 +29,10 @@ export const SphericalCamera = ({
         }
         if (origin || coords) invalidate()
       }),
-    [updateStream, invalidate]
+    [updateStream, invalidate] // TODO: Invalidate probably shouldn't be a dependency
   )
+  const [r, theta, phi] = coords
+  // TODO: Use maths, not a <group> https://github.com/garbo-succus/control-kit/issues/6
   return (
     <group ref={groupRef} position={origin} rotation={[0, phi, theta]}>
       <PerspectiveCamera
