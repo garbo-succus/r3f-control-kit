@@ -21,7 +21,8 @@ export default function App() {
     {
       updateCameraConfig((config) => ({
         ...config,
-        defaultOrigin: [0, 0.5, 0]
+        defaultOrigin: [0, 0.5, 0],
+        defaultCoords: [5, Math.PI / 4, Math.PI / 8]
       }))
       updateCamera(() => ({
         origin: useCameraConfig.getState().defaultOrigin,

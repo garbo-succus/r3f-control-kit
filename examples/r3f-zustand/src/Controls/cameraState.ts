@@ -6,7 +6,7 @@ export const useCameraConfig = create((set) => ({
   minTheta: Math.PI / 16,
   maxTheta: Math.PI / 2,
   defaultOrigin: [0, 0, 0],
-  defaultCoords: [5, Math.PI / 4, Math.PI / 8],
+  defaultCoords: [1, Math.PI / 4, 0],
   updateCameraConfig: (updater: Function) =>
     set(
       (state) => updater(state) ?? {} // Ignore null/undefined
