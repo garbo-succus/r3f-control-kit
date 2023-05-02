@@ -43,9 +43,9 @@ export const App = () => {
   useEffect(() =>
     // Set initial camera config; update camera
     {
-      updateCameraConfig((config) => ({
-        ...config,
-        defaultOrigin: [0, 0.5, 0]
+      updateCameraConfig(() => ({
+        defaultOrigin: [0, 0.5, 0],
+        defaultCoords: [5, Math.PI / 4, Math.PI / 8]
       }))
       updateCamera(() => ({
         origin: useCameraConfig.getState().defaultOrigin,
