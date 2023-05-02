@@ -40,7 +40,7 @@ GestureStream events could have an API similar to PointerEvents, i.e. we treat d
 
 We could take a similar approach for turning WheelEvents and Safari touchpad gesture events into GestureStream TouchpadEvents or something.
 
-We should check the Gamepad, Keyboard, and XR events and see if they could also be treated like proprietary PointerEvents (or visa-versa)
+We should check the Gamepad, Keyboard, Web MIDI, and XR events and see if they could also be treated like proprietary PointerEvents (or visa-versa).
 
 <hr />
 
