@@ -43,13 +43,14 @@ export const App = () => {
   useEffect(() =>
     // Set initial camera config; update camera
     {
-      updateCameraConfig(() => ({
+      const cameraConfig = {
         defaultOrigin: [0, 0.5, 0],
         defaultCoords: [5, Math.PI / 4, Math.PI / 8]
-      }))
+      }
+      updateCameraConfig(() => cameraConfig)
       updateCamera(() => ({
-        origin: useCameraConfig.getState().defaultOrigin,
-        coords: useCameraConfig.getState().defaultCoords
+        origin: cameraConfig.defaultOrigin,
+        coords: cameraConfig.defaultCoords
       }))
     }, []) // Only run on initial component mount
   return (
