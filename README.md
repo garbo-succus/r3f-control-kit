@@ -285,7 +285,9 @@ It is recommended to show the "ctrl" key as a wheel modifier key in keyboard con
 
 ### `touchAction: 'none'`
 
-"Make sure you always set [touchAction](https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action) on a draggable element to prevent glitches with the browser native scrolling on touch devices" ([pmndrs/use-gesture](https://github.com/pmndrs/use-gesture)).
+> Make sure you always set [touchAction](https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action) on a draggable element to prevent glitches with the browser native scrolling on touch devices
+
+-- [pmndrs/use-gesture](https://github.com/pmndrs/use-gesture)
 
 ### In-app cursors
 
