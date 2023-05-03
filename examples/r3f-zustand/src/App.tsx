@@ -31,7 +31,7 @@ export default function App() {
 
   return (
     <Canvas
-      frameloop="demand"
+      frameloop="demand" /* Don't waste battery rendering unnecessary frames */
       style={{
         touchAction: 'none',
         height: '100vh',
