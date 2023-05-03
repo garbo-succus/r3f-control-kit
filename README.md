@@ -15,6 +15,7 @@ Please DM me (neftaly) on the Poimandres discord with any comments, questions, o
   - `getScreenXY`
 - These functions will have their signature (args, arg order) changed:
   - `getScreenXY`
+- `<PerspectiveCamera>` is positioned with `<group>` (some Drei components don't work correctly)
 - Major API changes not expected
 
 ## Rationale
