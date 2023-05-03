@@ -1,6 +1,6 @@
 # 🕹️ control-kit
 
-This is a toolkit for implementing DOM gestures and react-three-fiber camera controls.
+This is a toolkit for implementing react-three-fiber camera controls.
 
 ## Status: Alpha
 
