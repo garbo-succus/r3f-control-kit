@@ -28,7 +28,6 @@ export default function App() {
         coords: useCameraConfig.getState().defaultCoords
       }))
     }, []) // Only run on initial component mount
-
   return (
     <Canvas
       frameloop="demand" /* Don't waste battery rendering unnecessary frames */
@@ -49,7 +48,7 @@ export default function App() {
       </mesh>
 
       {/* Demonstrate bypassing React reconciliation */}
-      {/* TODO: Force an initial updateStream event to fire */}
+      {/* TODO: BUG: This does not render in the correct position for first frame */}
       <CameraHintImperative updateStream={useCamera.subscribe} />
       <CameraHintDeclarative origin={origin} />
     </Canvas>
