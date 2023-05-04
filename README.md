@@ -18,8 +18,6 @@ Please DM me (neftaly) on the Poimandres discord with any comments, questions, o
 - `<PerspectiveCamera>` is positioned with `<group>` (some Drei components don't work correctly)
 - Major API changes not expected
 
-If you want to evaluate using this in production (for agencies, interactive exhibits, commercial products, etc), please get in touch.
-
 ## Rationale
 
 Camera controls are generally the main way humans interact with 3D apps.
