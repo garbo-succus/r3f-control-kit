@@ -2,6 +2,15 @@
 
 This is a toolkit for implementing react-three-fiber camera controls.
 
+## Rationale
+
+Camera controls are generally the main way humans interact with 3D apps.
+They must handle multiple input methods (touch, keyboard, mouse, gamepads, XR, pen, etc) but should get out of the way when not needed.
+
+We have found "kitchen sink" camera controllers to be difficult to integrate into state management, and easy to outgrow.
+
+Rather than ship an entire controller, we aim to provide composable pieces for building one, patterns for common requirements, and boilerplate to get started with.
+
 ## Status: Alpha
 
 This library is brand new and currently awaiting feedback.
@@ -17,15 +26,6 @@ Please DM me (neftaly) on the Poimandres discord with any comments, questions, o
   - `getScreenXY`
 - `<PerspectiveCamera>` is positioned with `<group>` (some Drei components don't work correctly)
 - Major API changes not expected
-
-## Rationale
-
-Camera controls are generally the main way humans interact with 3D apps.
-They must handle multiple input methods (touch, keyboard, mouse, gamepads, XR, pen, etc) but should get out of the way when not needed.
-
-We have found "kitchen sink" camera controllers to be difficult to integrate into state management, and easy to outgrow.
-
-Rather than ship an entire controller, we aim to provide composable pieces for building one, patterns for common requirements, and boilerplate to get started with.
 
 ## Example
 
