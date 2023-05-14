@@ -7,20 +7,21 @@ import {
 import { useCameraConfig, updateCamera } from './cameraState'
 
 export const eventHandler = (event) => {
+  const cameraConfig = useCameraConfig.getState()
   switch (event.type) {
     case 'pointerup':
     case 'pointerdown':
     case 'pointermove':
-      return updateCamera(handlePointer(event))
+      return updateCamera(handlePointer(event, cameraConfig))
     case 'wheel':
-      return updateCamera(handleWheel(event))
+      return updateCamera(handleWheel(event, cameraConfig))
     default:
       return
   }
 }
 
 export const handlePointer =
-  ({ buttons, movementX, movementY }: PointerEvent) =>
+  ({ buttons, movementX, movementY }: PointerEvent, cameraConfig: Object) =>
   ({ origin: [x, y, z], coords: [r, theta, phi] }) => {
     const [leftButton, rightButton, middleButton] = bitmaskToArray(buttons)
 
@@ -45,7 +46,6 @@ export const handlePointer =
 
     // Rotate camera (coords)
     if (rightButton) {
-      const cameraConfig = useCameraConfig.getState()
       const coords = normalizeCoords(cameraConfig, [
         r,
         theta + movementY / scaling,
@@ -56,15 +56,14 @@ export const handlePointer =
 
     // Reset camera
     if (middleButton) {
-      const { defaultOrigin, defaultCoords } = useCameraConfig.getState()
       return {
-        origin: defaultOrigin,
-        coords: defaultCoords
+        origin: cameraConfig.defaultOrigin,
+        coords: cameraConfig.defaultCoords
       }
     }
   }
 
-export const handleWheel = (event: PointerEvent) => (state) => {
+export const handleWheel = (event: PointerEvent, cameraConfig: Object) => (state) => {
   // TODO: Add support for Safari touchpad gesture events
   const {
     altKey,
@@ -87,7 +86,6 @@ export const handleWheel = (event: PointerEvent) => (state) => {
   }
 
   // Rotate camera (coords)
-  const cameraConfig = useCameraConfig.getState()
   const {
     coords: [r, theta, phi]
   } = state
