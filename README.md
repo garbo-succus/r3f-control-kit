@@ -14,7 +14,7 @@ Rather than ship an entire controller, we aim to provide composable pieces for b
 ## Status: Alpha
 
 This library is brand new and currently awaiting feedback.
-Please DM me (neftaly) on the Poimandres discord with any comments, questions, or encouragement.
+Please DM me (neftaly) on the garbo.succus.games [Discord](https://discord.gg/sJVbJcd) with any comments, questions, or encouragement.
 
 - Incomplete types
 - No tests
