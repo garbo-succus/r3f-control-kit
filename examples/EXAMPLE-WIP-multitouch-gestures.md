@@ -4,7 +4,8 @@ This gesture handler works by processing pointer events in a [Flyd](https://gith
 
 ## Planned
 
-I hope to implement these before September 2023:
+~~I hope to implement these before September 2023:~~ 
+[Update Sep 2023]: My priorities have changed however this will still be done! I am working on integrating this with <https://github.com/coconut-xr/natuerlich>
 
 - short-press (tap)
 - drag
