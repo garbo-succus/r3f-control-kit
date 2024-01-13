@@ -11,6 +11,12 @@ We have found "kitchen sink" camera controllers to be difficult to integrate int
 
 Rather than ship an entire controller, we aim to provide composable pieces for building one, patterns for common requirements, and boilerplate to get started with.
 
+## Why isn't this already a thing?
+
+There is an overhead when passing new props to a React component, which makes camera movement laggy. 
+
+Instead, we pass an event stream as a prop. This bypasses reconciliation, is compatible with good state management libraries, and is only slightly weird.
+
 ## Status: Alpha
 
 This library is brand new and currently awaiting feedback.
